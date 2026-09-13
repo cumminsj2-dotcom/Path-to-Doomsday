@@ -1,0 +1,14 @@
+{
+  "name": "Road to Doomsday",
+  "short_name": "Doomsday",
+  "description": "Every live-action Marvel title before Avengers: Doomsday, on a 95-day schedule.",
+  "start_url": "./doomsday-checklist-hosted.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1E2724",
+  "theme_color": "#1E2724",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Road to Doomsday</title>
+<meta name="description" content="Every live-action Marvel title before Avengers: Doomsday, on a 95-day schedule.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1E2724">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Doomsday">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --iron:#1E2724; --iron-2:#27332E; --rule:#3C4C45;
+    --parchment:#E9E4D6; --muted:#8B9891;
+    --brass:#C0924F; --brass-dim:#7A6236; --verdigris:#4E8466;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--iron);color:var(--parchment);
+    font-family:'Archivo',system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.5;padding:0 0 64px}
+  .wrap{max-width:660px;margin:0 auto;padding:0 18px}
+
+  header{padding:34px 0 22px}
+  .kicker{font-family:'Fraunces',Georgia,serif;font-size:13px;color:var(--muted);margin:0 0 6px}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:30px;
+    line-height:1.1;margin:0 0 18px;letter-spacing:-.01em}
+  .count{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+  .count b{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:42px;line-height:1}
+  .count span{color:var(--muted);font-size:14px}
+  .days{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .days em{color:var(--brass);font-style:normal;font-weight:600}
+
+  .weeks{display:flex;gap:3px;height:62px;align-items:flex-end}
+  .weeks .wk{position:relative;flex:1;height:100%;background:var(--iron-2);
+    border-radius:3px;overflow:hidden;display:flex;align-items:flex-end}
+  .weeks .wk .comp{position:absolute;inset:0;display:flex;flex-direction:column-reverse}
+  .weeks .wk .comp u{display:block;width:100%;background:var(--u);opacity:.5;text-decoration:none}
+  .weeks .wk i{position:absolute;left:0;right:0;bottom:0;background:var(--verdigris);
+    transition:height .45s cubic-bezier(.4,0,.2,1)}
+  .weeks .wk s{position:absolute;left:-1px;right:-1px;height:0;text-decoration:none;
+    border-top:2px dashed var(--brass);transform:translateY(1px)}
+  .weeks .wk.short i{background:var(--brass-dim)}
+  .weeks .wk.now{outline:1.5px solid var(--brass);outline-offset:1px}
+  .weeks .wk.now i{background:var(--brass)}
+  .wk{flex:0 0 auto;font-size:11.5px;color:var(--muted);white-space:nowrap;padding-top:2px}
+  .weeks .wk em{position:absolute;left:0;right:0;bottom:3px;text-align:center;
+    font-style:normal;font-size:10px;color:var(--muted)}
+  .lane{border-left:3px solid var(--u);padding:2px 0 2px 11px;margin:14px 0}
+  .lane-h{margin:0 0 7px;font-family:'Fraunces',Georgia,serif;font-size:15px;color:var(--parchment)}
+  .lane-n{margin:8px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{display:inline-flex;align-items:baseline;gap:5px;padding:4px 8px;border-radius:4px;
+    border:1px solid var(--u);background:rgba(255,255,255,.03);font-size:12px;color:var(--parchment)}
+  .chip b{font-weight:400;font-size:10.5px;color:var(--muted)}
+  .chip.on{opacity:.45;text-decoration:line-through}
+  .lane.end{--u:var(--crimson);margin-top:18px}
+  .lane.end .lane-h{color:var(--crimson)}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+  .cal i{display:block;aspect-ratio:1;border-radius:3px;background:var(--iron-2)}
+  .cal i.c-full{background:var(--verdigris)}
+  .cal i.c-part{background:var(--brass-dim)}
+  .cal i.c-miss{background:var(--crimson);opacity:.65}
+  .cal i.c-today{background:transparent;outline:1.5px solid var(--brass)}
+  details.charts{margin-top:20px;border-top:1px solid var(--rule);padding-top:12px}
+  details.charts summary{cursor:pointer;color:var(--muted);font-size:13px;padding:4px 0}
+  details.charts svg{width:100%;height:auto;display:block;overflow:visible}
+  .yline{margin-top:22px;padding-top:18px;border-top:1px solid var(--rule)}
+  .yline svg{width:100%;height:auto;display:block;overflow:visible}
+  .ycap{margin:5px 0 0;font-size:13px;color:var(--muted)}
+  .ycap em{font-style:normal;color:var(--brass);font-weight:600}
+  .ycap em.r{color:var(--crimson)}
+  .ylab{margin:0 0 2px;font-size:12px;color:var(--muted)}
+  .ylab.tgt{margin-top:22px;color:var(--crimson)}
+  .legend.key{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .sw{display:inline-block;width:16px;height:9px;border-radius:2px;background:var(--verdigris)}
+  .sw.dash{height:0;border-top:2px dashed var(--brass);background:none;margin-left:8px}
+  .pace{margin:12px 0 0;font-size:14px;color:var(--muted)}
+  .pace em{font-style:normal;font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:600}
+  .pace.up em{color:var(--verdigris)} .pace.down em{color:var(--brass)}
+  .rail-ends{display:flex;justify-content:space-between;margin-top:7px;color:var(--muted);font-size:12px}
+
+  .tools{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  button.tool{font-family:inherit;font-size:13px;color:var(--parchment);
+    background:var(--iron-2);border:1px solid var(--rule);
+    padding:9px 14px;border-radius:999px;cursor:pointer;min-height:38px}
+  button.tool[aria-pressed="true"]{border-color:var(--brass);color:var(--brass)}
+  button.tool:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  .legend{color:var(--muted);font-size:12.5px;margin:16px 0 0;line-height:1.55}
+
+  .year{margin-top:30px}
+  .year-head{display:flex;align-items:center;gap:12px;
+    padding-bottom:8px;border-bottom:1px solid var(--rule)}
+  .year-head h2{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:21px;margin:0}
+  .year-head small{color:var(--muted);font-size:12.5px;margin-left:auto}
+
+  ul{list-style:none;margin:0;padding:0}
+  li{border-bottom:1px solid rgba(60,76,69,.5)}
+  label{display:flex;align-items:flex-start;gap:13px;padding:13px 2px;cursor:pointer;min-height:44px}
+  input[type=checkbox]{appearance:none;-webkit-appearance:none;
+    flex:0 0 auto;width:20px;height:20px;margin-top:2px;
+    border:1.5px solid var(--rule);border-radius:4px;background:transparent;
+    cursor:pointer;position:relative;transition:border-color .15s,background .15s}
+  input[type=checkbox]:checked{background:var(--verdigris);border-color:var(--verdigris)}
+  input[type=checkbox]:checked::after{content:"";position:absolute;left:6px;top:2px;
+    width:5px;height:10px;border:solid var(--iron);border-width:0 2px 2px 0;transform:rotate(42deg)}
+  input[type=checkbox]:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+  .t{flex:1;min-width:0}
+  .t .name{display:block;transition:color .2s}
+  .t .meta{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+  .wk{color:var(--brass-dim);font-size:12px;flex:0 0 auto;margin-top:3px}
+  li.done .name{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--brass-dim)}
+  li.done .meta{opacity:.6}
+  li.key .name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:8px;
+    border:1.5px solid var(--brass);border-radius:50%;vertical-align:middle}
+
+  li.finale{border-bottom:none}
+  li.finale label{padding:20px 2px}
+  li.finale .name{font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:600}
+  li.serhead{display:flex;justify-content:space-between;align-items:center;
+    padding:14px 2px 6px;color:var(--brass);font-family:'Fraunces',Georgia,serif;font-size:15px;border-bottom:none}
+  li.ep label{padding:10px 2px 10px 14px;min-height:40px}
+  li.ep .name{font-size:14.5px}
+  .rt{display:inline-block;margin-left:8px;color:var(--muted);font-size:12px;
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  li.serhead .rt{font-family:'Archivo',sans-serif;font-size:12px}
+  .sv{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;
+    border:1px solid var(--rule);color:var(--muted);font-size:11px;white-space:nowrap;vertical-align:1px}
+  .sv.rot{border-color:var(--brass-dim);color:var(--brass)}
+  li.serhead .sv{font-family:'Archivo',sans-serif}
+  li[class*="g-"]{border-left:3px solid transparent;padding-left:9px}
+  .g-mcu{--u:#C0924F} .g-fox{--u:#4E8466} .g-sony{--u:#7D79BC}
+  .g-nflx{--u:#B8402F} .g-othr{--u:#7C93A8}
+  li[class*="g-"]{border-left-color:var(--u)}
+  li.done[class*="g-"],li.skipped[class*="g-"]{border-left-color:color-mix(in srgb,var(--u) 30%,transparent)}
+  .pc{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:3px;
+    background:rgba(192,146,79,.18);border:1px solid var(--brass-dim);
+    color:var(--brass);font-size:11px;font-weight:600;vertical-align:1px}
+  .legend.pcl{margin-top:9px;gap:6px}
+  .legend.pcl .pc{margin-left:0}
+  .ub{display:inline-block;width:4px;height:13px;border-radius:1px;background:var(--u);vertical-align:-2px}
+  .legend.uni{gap:5px;margin-top:7px;font-size:12px}
+  .legend.uni .ub{margin-left:9px}
+  .legend.uni .ub:first-child{margin-left:0}
+  .ring{display:inline-block;width:7px;height:7px;margin-left:9px;
+    border:1.5px solid var(--brass);border-radius:50%;vertical-align:middle}
+  li{display:flex;align-items:stretch}
+  li label{flex:1;min-width:0}
+  button.upto{flex:0 0 auto;width:38px;border:none;background:none;cursor:pointer;
+    color:var(--rule);font-size:15px;line-height:1;padding:0}
+  button.upto:hover,button.upto:focus-visible{color:var(--brass);outline:none}
+  li.serhead button.upto,li.finale button.upto{display:none}
+  .daily{margin-top:-10px}
+  .nextup{margin:16px 0 4px;padding:13px 14px;border:1px solid var(--brass-dim);
+    border-radius:8px;background:rgba(192,146,79,.07)}
+  .nu-lab{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
+  .nu-name{display:block;margin-top:3px;font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.25}
+  .nu-meta{display:block;margin-top:4px;color:var(--muted);font-size:12.5px}
+  .nextup .rt{margin-left:0}
+  .nextup button{margin-top:11px}
+  .wk.late{color:var(--crimson)}
+  button.skipbtn{flex:0 0 auto;width:34px;border:none;background:none;cursor:pointer;
+    color:var(--rule);font-size:18px;line-height:1;padding:0}
+  button.skipbtn:hover,button.skipbtn:focus-visible{color:var(--crimson);outline:none}
+  li.skipped .name{color:var(--rule);text-decoration:line-through}
+  li.skipped .meta,li.skipped .wk,li.skipped .sv,li.skipped .rt{opacity:.35}
+  li.serhead.skipped span{opacity:.4;text-decoration:line-through}
+  li.serhead{cursor:pointer}
+  .year-head{cursor:pointer}
+  section.year.shut .year-head{opacity:.5;border-bottom-color:transparent}
+  section.year.shut{margin-top:14px}
+  .shcount{margin-left:auto}
+  .sn{font-style:normal;color:var(--muted)}
+  .searchbox{width:100%;margin-top:18px;padding:11px 13px;min-height:44px;font-family:inherit;
+    font-size:16px;color:var(--parchment);background:var(--iron-2);
+    border:1px solid var(--rule);border-radius:8px}
+  .searchbox::placeholder{color:var(--muted)}
+  button.tool:disabled{opacity:.35;cursor:default}
+  button.tool.danger{border-color:var(--crimson);color:var(--crimson)}
+  section.year.today .year-head{border-bottom-color:var(--brass)}
+  section.year.today h2{color:var(--brass)}
+  section.year.past h2{color:var(--muted)}
+  section.year h2{font-size:17px}
+  .warn{margin:16px 0 0;padding:11px 13px;border:1px solid var(--brass-dim);
+    border-radius:6px;color:var(--brass);font-size:13px;line-height:1.45}
+  details.pcode{margin-top:14px;border-top:1px solid var(--rule);padding-top:12px}
+  details.pcode summary{cursor:pointer;color:var(--muted);font-size:13px;padding:4px 0}
+  details.pcode summary b{color:var(--brass);font-weight:500}
+  button.tool.go{border-color:var(--verdigris);color:#9FD4B6}
+  .pl{color:var(--muted);font-size:12.5px;margin:12px 0 5px}
+  .pcode input{width:100%;font-family:ui-monospace,Menlo,monospace;font-size:16px;
+    background:var(--iron-2);border:1px solid var(--rule);border-radius:6px;
+    color:var(--parchment);padding:10px;min-height:42px}
+  .prow{display:flex;gap:8px}
+  .prow input{flex:1;min-width:0}
+  .status{color:var(--muted);font-size:13px;padding:24px 0}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Every live-action Marvel title, 1998 to 2026</p>
+    <h1>Road to Doomsday</h1>
+    <div class="count"><b id="n">0</b><span id="of">of 360 entries done</span></div>
+    <p class="days" id="days">&nbsp;</p>
+    <p class="days daily" id="daily">&nbsp;</p>
+    <div class="nextup" id="nextup"></div>
+    <div class="weeks" id="weeks"></div>
+    <div class="rail-ends"><span>Wk 1 &middot; Sep 14</span><span>Wk 14 &middot; Dec 17</span></div>
+    <p class="pace" id="pace">&nbsp;</p>
+    <p class="legend key"><span class="sw fill"></span>watched <span class="sw dash"></span>where you should be today</p>
+    <p class="legend key pcl"><span class="pc">+2</span>credits scenes worth staying for</p>
+    <p class="legend key uni"><span class="ub g-mcu"></span>MCU <span class="ub g-fox"></span>Fox mutants <span class="ub g-sony"></span>Sony <span class="ub g-nflx"></span>Netflix <span class="ub g-othr"></span>Blade &amp; co.</p>
+    <details class="charts"><summary>Why these titles matter</summary>
+      <div id="threads"></div>
+    </details>
+    <details class="charts"><summary>Day-by-day record</summary>
+      <div class="cal" id="cal"></div>
+      <p class="ycap" id="calcap">&nbsp;</p>
+    </details>
+    <details class="charts"><summary>Burn-down &amp; runtime spread</summary>
+      <p class="ylab">Hours remaining vs. days left</p>
+      <svg id="burn" viewBox="0 0 340 152" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="ycap" id="burncap">&nbsp;</p>
+      <p class="ylab" style="margin-top:20px">How long things are</p>
+      <svg id="hist" viewBox="0 0 340 132" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="ycap" id="histcap">&nbsp;</p>
+    </details>
+    <div class="yline">
+      <p class="ylab">Where you are</p>
+      <svg id="years" viewBox="0 0 340 84" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="ycap" id="ycap">&nbsp;</p>
+      <p class="ylab tgt">Where the schedule says you should be</p>
+      <svg id="years2" viewBox="0 0 340 84" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="ycap" id="ycap2">&nbsp;</p>
+    </div>
+    <input id="search" class="searchbox" placeholder="Search titles&hellip;" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="tools">
+      <button class="tool" id="sortby" aria-pressed="false">Sort: release order</button>
+      <button class="tool" id="todayonly" aria-pressed="false">Today only</button>
+      <button class="tool" id="weekonly" aria-pressed="false">Week 1 only</button>
+      <button class="tool" id="hide" aria-pressed="false">Hide watched</button>
+      <button class="tool" id="undo">Undo</button>
+      <button class="tool" id="replan">Re-plan from today</button>
+      <button class="tool" id="reset">Clear all</button>
+    </div>
+    <p class="legend">Release order, oldest first. The week number on the right is your pace target &mdash; 28 hours each; long seasons are split where a week ends. A brass ring marks the titles that connect most directly to Doomsday. Streaming shown for the US and correct today only.</p>
+  </header>
+  <details class="pcode">
+    <summary>Progress code &mdash; <b id="codecount">0 ticked</b></summary>
+    <p class="pl">Your progress saves automatically in this browser. This code is a backup for moving to another device.</p>
+    <div class="prow"><input id="code" readonly onclick="this.select()"><button class="tool go" id="docopy">Copy</button></div>
+    <p class="pl">Coming back? Paste your code here.</p>
+    <div class="prow"><input id="rest" inputmode="text" placeholder="e.g. 187" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="tool" id="dorest">Restore</button></div>
+  </details>
+
+  <main id="list"><p class="status">Loading your progress&hellip;</p></main>
+</div>
+
+<script>
+const DATA=[
+["blade1",1998,"Blade","August &middot; New Line",0,1],
+["xmen",2000,"X-Men","July &middot; Stewart, McKellen, Marsden, Romijn",1,1],
+["blade2",2002,"Blade II","March &middot; del Toro directs",0,1],
+["sm1",2002,"Spider-Man","May &middot; Maguire, Dafoe",1,1],
+["dd03",2003,"Daredevil","February &middot; Affleck, Garner",1,1],
+["x2",2003,"X2: X-Men United","May &middot; introduces Nightcrawler",1,1],
+["pun04",2004,"The Punisher","April &middot; Thomas Jane",0,1],
+["sm2",2004,"Spider-Man 2","June &middot; Molina&rsquo;s Doc Ock",1,1],
+["blade3",2004,"Blade: Trinity","December",0,1],
+["elektra",2005,"Elektra","January &middot; Garner returns in Deadpool &amp; Wolverine",1,1],
+["ff05",2005,"Fantastic Four","July &middot; Doom on screen, take two",0,1],
+["last",2006,"X-Men: The Last Stand","May &middot; introduces Beast",1,1],
+["ghostrider",2007,"Ghost Rider","February &middot; Nicolas Cage",0,1],
+["sm3",2007,"Spider-Man 3","May &middot; Church&rsquo;s Sandman",1,1],
+["surfer",2007,"Fantastic Four: Rise of the Silver Surfer","June",0,1],
+["im1",2008,"Iron Man","May &middot; the first Downey",1,2],
+["hulk",2008,"The Incredible Hulk","June",0,2],
+["warzone",2008,"Punisher: War Zone","December &middot; Ray Stevenson",0,2],
+["origins",2009,"X-Men Origins: Wolverine","May",0,2],
+["im2",2010,"Iron Man 2","May",0,2],
+["thor1",2011,"Thor","May",0,2],
+["first",2011,"X-Men: First Class","June",0,2],
+["ca1",2011,"Captain America: The First Avenger","July",0,2],
+["ghostrider2",2012,"Ghost Rider: Spirit of Vengeance","February &middot; US release",0,2],
+["avengers",2012,"The Avengers","May",0,2],
+["tasm1",2012,"The Amazing Spider-Man","July &middot; Garfield, Ifans",1,2],
+["im3",2013,"Iron Man 3","May",0,2],
+["wolv",2013,"The Wolverine","July",0,2],
+["tdw",2013,"Thor: The Dark World","November",0,2],
+["catws",2014,"Captain America: The Winter Soldier","April",0,3],
+["tasm2",2014,"The Amazing Spider-Man 2","May &middot; Foxx&rsquo;s Electro",1,3],
+["dofp",2014,"X-Men: Days of Future Past","May &middot; Fox rewrites its own timeline",1,3],
+["gotg",2014,"Guardians of the Galaxy","August",0,3],
+["ndd1e01",2015,"1.01 &middot; Into the Ring","",1,3,"Daredevil &mdash; Season 1"],
+["ndd1e02",2015,"1.02 &middot; Cut Man","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e03",2015,"1.03 &middot; Rabbit in a Snowstorm","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e04",2015,"1.04 &middot; In the Blood","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e05",2015,"1.05 &middot; World on Fire","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e06",2015,"1.06 &middot; Condemned","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e07",2015,"1.07 &middot; Stick","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e08",2015,"1.08 &middot; Shadows in the Glass","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e09",2015,"1.09 &middot; Speak of the Devil","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e10",2015,"1.10 &middot; Nelson v. Murdock","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e11",2015,"1.11 &middot; The Path of the Righteous","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e12",2015,"1.12 &middot; The Ones We Leave Behind","",0,3,"Daredevil &mdash; Season 1"],
+["ndd1e13",2015,"1.13 &middot; Daredevil","",0,3,"Daredevil &mdash; Season 1"],
+["aou",2015,"Avengers: Age of Ultron","May &middot; Vision arrives",0,3],
+["antman",2015,"Ant-Man","July",0,3],
+["ff15",2015,"Fant4stic","August &middot; Doom on screen, take three",0,3],
+["jj1e01",2015,"1.01 &middot; AKA Ladies Night","",0,3,"Jessica Jones &mdash; Season 1"],
+["jj1e02",2015,"1.02 &middot; AKA Crush Syndrome","",0,3,"Jessica Jones &mdash; Season 1"],
+["jj1e03",2015,"1.03 &middot; AKA It&rsquo;s Called Whiskey","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e04",2015,"1.04 &middot; AKA 99 Friends","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e05",2015,"1.05 &middot; AKA The Sandwich Saved Me","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e06",2015,"1.06 &middot; AKA You&rsquo;re a Winner!","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e07",2015,"1.07 &middot; AKA Top Shelf Perverts","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e08",2015,"1.08 &middot; AKA WWJD?","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e09",2015,"1.09 &middot; AKA Sin Bin","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e10",2015,"1.10 &middot; AKA 1,000 Cuts","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e11",2015,"1.11 &middot; AKA I&rsquo;ve Got the Blues","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e12",2015,"1.12 &middot; AKA Take a Bloody Number","",0,4,"Jessica Jones &mdash; Season 1"],
+["jj1e13",2015,"1.13 &middot; AKA Smile","",0,4,"Jessica Jones &mdash; Season 1"],
+["dp1",2016,"Deadpool","February",0,4],
+["ndd2e01",2016,"2.01 &middot; Bang","",1,4,"Daredevil &mdash; Season 2"],
+["ndd2e02",2016,"2.02 &middot; Dogs to a Gunfight","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e03",2016,"2.03 &middot; New York&rsquo;s Finest","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e04",2016,"2.04 &middot; Penny and Dime","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e05",2016,"2.05 &middot; Kinbaku","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e06",2016,"2.06 &middot; Regrets Only","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e07",2016,"2.07 &middot; Semper Fidelis","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e08",2016,"2.08 &middot; Guilty as Sin","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e09",2016,"2.09 &middot; Seven Minutes in Heaven","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e10",2016,"2.10 &middot; The Man in the Box","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e11",2016,"2.11 &middot; .380","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e12",2016,"2.12 &middot; The Dark at the End of the Tunnel","",0,4,"Daredevil &mdash; Season 2"],
+["ndd2e13",2016,"2.13 &middot; A Cold Day in Hell&rsquo;s Kitchen","",0,4,"Daredevil &mdash; Season 2"],
+["civil",2016,"Captain America: Civil War","May",0,4],
+["apoc",2016,"X-Men: Apocalypse","May",0,4],
+["lc1e01",2016,"1.01 &middot; Moment of Truth","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e02",2016,"1.02 &middot; Code of the Streets","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e03",2016,"1.03 &middot; Who&rsquo;s Gonna Take the Weight?","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e04",2016,"1.04 &middot; Step in the Arena","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e05",2016,"1.05 &middot; Just to Get a Rep","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e06",2016,"1.06 &middot; Suckas Need Bodyguards","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e07",2016,"1.07 &middot; Manifest","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e08",2016,"1.08 &middot; Blowin&rsquo; Up the Spot","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e09",2016,"1.09 &middot; DWYCK","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e10",2016,"1.10 &middot; Take It Personal","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e11",2016,"1.11 &middot; Now You&rsquo;re Mine","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e12",2016,"1.12 &middot; Soliloquy of Chaos","",0,5,"Luke Cage &mdash; Season 1"],
+["lc1e13",2016,"1.13 &middot; You Know My Steez","",0,5,"Luke Cage &mdash; Season 1"],
+["strange",2016,"Doctor Strange","November",0,5],
+["logan",2017,"Logan","March &middot; Xavier dies here",1,5],
+["if1e01",2017,"1.01 &middot; Snow Gives Way","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e02",2017,"1.02 &middot; Shadow Hawk Takes Flight","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e03",2017,"1.03 &middot; Rolling Thunder Cannon Punch","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e04",2017,"1.04 &middot; Eight Diagram Dragon Palm","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e05",2017,"1.05 &middot; Under Leaf Pluck Lotus","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e06",2017,"1.06 &middot; Immortal Emerges from Cave","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e07",2017,"1.07 &middot; Felling Tree with Roots","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e08",2017,"1.08 &middot; The Blessing of Many Fractures","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e09",2017,"1.09 &middot; The Mistress of All Agonies","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e10",2017,"1.10 &middot; Black Tiger Steals Heart","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e11",2017,"1.11 &middot; Lead Horse Back to Stable","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e12",2017,"1.12 &middot; Bar the Big Boss","",0,5,"Iron Fist &mdash; Season 1"],
+["if1e13",2017,"1.13 &middot; Dragon Plays with Fire","",0,5,"Iron Fist &mdash; Season 1"],
+["gotg2",2017,"Guardians of the Galaxy Vol. 2","May",0,6],
+["homecoming",2017,"Spider-Man: Homecoming","July",0,6],
+["defe01",2017,"1.01 &middot; The H Word","",0,6,"The Defenders"],
+["defe02",2017,"1.02 &middot; Mean Right Hook","",0,6,"The Defenders"],
+["defe03",2017,"1.03 &middot; Worst Behavior","",0,6,"The Defenders"],
+["defe04",2017,"1.04 &middot; Royal Dragon","",0,6,"The Defenders"],
+["defe05",2017,"1.05 &middot; Take Shelter","",0,6,"The Defenders"],
+["defe06",2017,"1.06 &middot; Ashes, Ashes","",0,6,"The Defenders"],
+["defe07",2017,"1.07 &middot; Fish in the Jailhouse","",0,6,"The Defenders"],
+["defe08",2017,"1.08 &middot; The Defenders","",0,6,"The Defenders"],
+["ragnarok",2017,"Thor: Ragnarok","November",0,6],
+["pu1e01",2017,"1.01 &middot; 3AM","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e02",2017,"1.02 &middot; Two Dead Men","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e03",2017,"1.03 &middot; Kandahar","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e04",2017,"1.04 &middot; Resupply","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e05",2017,"1.05 &middot; Gunner","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e06",2017,"1.06 &middot; The Judas Goat","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e07",2017,"1.07 &middot; Crosshairs","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e08",2017,"1.08 &middot; Cold Steel","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e09",2017,"1.09 &middot; Front Toward Enemy","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e10",2017,"1.10 &middot; Virtue of the Vicious","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e11",2017,"1.11 &middot; Danger Close","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e12",2017,"1.12 &middot; Home","",0,6,"The Punisher &mdash; Season 1"],
+["pu1e13",2017,"1.13 &middot; Memento Mori","",0,6,"The Punisher &mdash; Season 1"],
+["bp",2018,"Black Panther","February",0,6],
+["jj2e01",2018,"2.01 &middot; AKA Start at the Beginning","",0,6,"Jessica Jones &mdash; Season 2"],
+["jj2e02",2018,"2.02 &middot; AKA Freak Accident","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e03",2018,"2.03 &middot; AKA Sole Survivor","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e04",2018,"2.04 &middot; AKA God Help the Hobo","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e05",2018,"2.05 &middot; AKA The Octopus","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e06",2018,"2.06 &middot; AKA Facetime","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e07",2018,"2.07 &middot; AKA I Want Your Cray Cray","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e08",2018,"2.08 &middot; AKA Ain&rsquo;t We Got Fun","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e09",2018,"2.09 &middot; AKA Shark in the Bathtub, Monster in the Bed","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e10",2018,"2.10 &middot; AKA Pork Chop","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e11",2018,"2.11 &middot; AKA Three Lives and Counting","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e12",2018,"2.12 &middot; AKA Pray for My Patsy","",0,7,"Jessica Jones &mdash; Season 2"],
+["jj2e13",2018,"2.13 &middot; AKA Playland","",0,7,"Jessica Jones &mdash; Season 2"],
+["iw",2018,"Avengers: Infinity War","April",0,7],
+["dp2",2018,"Deadpool 2","May",0,7],
+["lc2e01",2018,"2.01 &middot; Soul Brother #1","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e02",2018,"2.02 &middot; Straighten It Out","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e03",2018,"2.03 &middot; Wig Out","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e04",2018,"2.04 &middot; I Get Physical","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e05",2018,"2.05 &middot; All Souled Out","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e06",2018,"2.06 &middot; The Basement","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e07",2018,"2.07 &middot; On and On","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e08",2018,"2.08 &middot; If It Ain&rsquo;t Rough, It Ain&rsquo;t Right","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e09",2018,"2.09 &middot; For Pete&rsquo;s Sake","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e10",2018,"2.10 &middot; The Main Ingredient","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e11",2018,"2.11 &middot; The Creator","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e12",2018,"2.12 &middot; Can&rsquo;t Front on Me","",0,7,"Luke Cage &mdash; Season 2"],
+["lc2e13",2018,"2.13 &middot; They Reminisce Over You","",0,7,"Luke Cage &mdash; Season 2"],
+["atw",2018,"Ant-Man and the Wasp","July",0,8],
+["if2e01",2018,"2.01 &middot; The Fury of Iron Fist","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e02",2018,"2.02 &middot; The City&rsquo;s Not for Burning","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e03",2018,"2.03 &middot; This Deadly Secret&hellip;","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e04",2018,"2.04 &middot; Target: Iron Fist","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e05",2018,"2.05 &middot; Heart of the Dragon","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e06",2018,"2.06 &middot; The Dragon Dies at Dawn","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e07",2018,"2.07 &middot; Morning of the Mindstorm","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e08",2018,"2.08 &middot; Citadel on the Edge of Vengeance","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e09",2018,"2.09 &middot; War Without End","",0,8,"Iron Fist &mdash; Season 2"],
+["if2e10",2018,"2.10 &middot; A Duel of Iron","",0,8,"Iron Fist &mdash; Season 2"],
+["venom1",2018,"Venom","October &middot; Sony",0,8],
+["ndd3e01",2018,"3.01 &middot; Resurrection","",1,8,"Daredevil &mdash; Season 3"],
+["ndd3e02",2018,"3.02 &middot; Please","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e03",2018,"3.03 &middot; No Good Deed","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e04",2018,"3.04 &middot; Blindsided","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e05",2018,"3.05 &middot; The Perfect Game","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e06",2018,"3.06 &middot; The Devil You Know","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e07",2018,"3.07 &middot; Aftermath","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e08",2018,"3.08 &middot; Upstairs/Downstairs","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e09",2018,"3.09 &middot; Revelations","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e10",2018,"3.10 &middot; Karen","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e11",2018,"3.11 &middot; Reunion","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e12",2018,"3.12 &middot; One Last Shot","",0,8,"Daredevil &mdash; Season 3"],
+["ndd3e13",2018,"3.13 &middot; A New Napkin","",0,8,"Daredevil &mdash; Season 3"],
+["pu2e01",2019,"2.01 &middot; Roadhouse Blues","",0,8,"The Punisher &mdash; Season 2"],
+["pu2e02",2019,"2.02 &middot; Fight or Flight","",0,8,"The Punisher &mdash; Season 2"],
+["pu2e03",2019,"2.03 &middot; Trouble the Water","",0,8,"The Punisher &mdash; Season 2"],
+["pu2e04",2019,"2.04 &middot; Scar Tissue","",0,8,"The Punisher &mdash; Season 2"],
+["pu2e05",2019,"2.05 &middot; One-Eyed Jacks","",0,8,"The Punisher &mdash; Season 2"],
+["pu2e06",2019,"2.06 &middot; Nakazat","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e07",2019,"2.07 &middot; One Bad Day","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e08",2019,"2.08 &middot; My Brother&rsquo;s Keeper","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e09",2019,"2.09 &middot; Flustercluck","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e10",2019,"2.10 &middot; The Dark Hearts of Men","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e11",2019,"2.11 &middot; The Abyss","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e12",2019,"2.12 &middot; Collision Course","",0,9,"The Punisher &mdash; Season 2"],
+["pu2e13",2019,"2.13 &middot; The Whirlwind","",0,9,"The Punisher &mdash; Season 2"],
+["cm",2019,"Captain Marvel","March",0,9],
+["endgame",2019,"Avengers: Endgame","April &middot; the Russos&rsquo; template",1,9],
+["phoenix",2019,"Dark Phoenix","June",0,9],
+["jj3e01",2019,"3.01 &middot; AKA The Perfect Burger","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e02",2019,"3.02 &middot; AKA You&rsquo;re Welcome","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e03",2019,"3.03 &middot; AKA I Have No Spleen","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e04",2019,"3.04 &middot; AKA Customer Service is Standing By","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e05",2019,"3.05 &middot; AKA I Wish","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e06",2019,"3.06 &middot; AKA Sorry Face","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e07",2019,"3.07 &middot; AKA The Double Half-Wappinger","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e08",2019,"3.08 &middot; AKA Camera Friendly","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e09",2019,"3.09 &middot; AKA I Did Something Today","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e10",2019,"3.10 &middot; AKA Hero Pants","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e11",2019,"3.11 &middot; AKA Hellcat","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e12",2019,"3.12 &middot; AKA A Lotta Worms","",0,9,"Jessica Jones &mdash; Season 3"],
+["jj3e13",2019,"3.13 &middot; AKA Everything","",0,9,"Jessica Jones &mdash; Season 3"],
+["ffh",2019,"Spider-Man: Far From Home","July",0,9],
+["mutants",2020,"The New Mutants","August &middot; the last Fox mutant film",0,10],
+["wve01",2021,"1.01 &middot; Filmed Before a Live Studio Audience","",1,10,"WandaVision"],
+["wve02",2021,"1.02 &middot; Don&rsquo;t Touch That Dial","",0,10,"WandaVision"],
+["wve03",2021,"1.03 &middot; Now in Color","",0,10,"WandaVision"],
+["wve04",2021,"1.04 &middot; We Interrupt This Program","",0,10,"WandaVision"],
+["wve05",2021,"1.05 &middot; On a Very Special Episode&hellip;","",0,10,"WandaVision"],
+["wve06",2021,"1.06 &middot; All-New Halloween Spooktacular!","",0,10,"WandaVision"],
+["wve07",2021,"1.07 &middot; Breaking the Fourth Wall","",0,10,"WandaVision"],
+["wve08",2021,"1.08 &middot; Previously On","",0,10,"WandaVision"],
+["wve09",2021,"1.09 &middot; The Series Finale","",0,10,"WandaVision"],
+["tfe01",2021,"1.01 &middot; New World Order","",0,10,"The Falcon and the Winter Soldier"],
+["tfe02",2021,"1.02 &middot; The Star-Spangled Man","",0,10,"The Falcon and the Winter Soldier"],
+["tfe03",2021,"1.03 &middot; Power Broker","",0,10,"The Falcon and the Winter Soldier"],
+["tfe04",2021,"1.04 &middot; The Whole World Is Watching","",0,10,"The Falcon and the Winter Soldier"],
+["tfe05",2021,"1.05 &middot; Truth","",0,10,"The Falcon and the Winter Soldier"],
+["tfe06",2021,"1.06 &middot; One World, One People","",0,10,"The Falcon and the Winter Soldier"],
+["lk1e01",2021,"1.01 &middot; Glorious Purpose","",1,10,"Loki &mdash; Season 1"],
+["lk1e02",2021,"1.02 &middot; The Variant","",0,10,"Loki &mdash; Season 1"],
+["lk1e03",2021,"1.03 &middot; Lamentis","",0,10,"Loki &mdash; Season 1"],
+["lk1e04",2021,"1.04 &middot; The Nexus Event","",0,10,"Loki &mdash; Season 1"],
+["lk1e05",2021,"1.05 &middot; Journey into Mystery","",0,10,"Loki &mdash; Season 1"],
+["lk1e06",2021,"1.06 &middot; For All Time. Always.","",0,10,"Loki &mdash; Season 1"],
+["bw",2021,"Black Widow","July &middot; Yelena and Red Guardian",0,10],
+["shang",2021,"Shang-Chi and the Legend of the Ten Rings","September",0,10],
+["venom2",2021,"Venom: Let There Be Carnage","October &middot; Sony",0,10],
+["eternals",2021,"Eternals","November",0,10],
+["hwe01",2021,"1.01 &middot; Never Meet Your Heroes","",0,10,"Hawkeye"],
+["hwe02",2021,"1.02 &middot; Hide and Seek","",0,10,"Hawkeye"],
+["hwe03",2021,"1.03 &middot; Echoes","",0,11,"Hawkeye"],
+["hwe04",2021,"1.04 &middot; Partners, Am I Right?","",0,11,"Hawkeye"],
+["hwe05",2021,"1.05 &middot; Ronin","",0,11,"Hawkeye"],
+["hwe06",2021,"1.06 &middot; So This Is Christmas?","",0,11,"Hawkeye"],
+["nwh",2021,"Spider-Man: No Way Home","December &middot; everything above pays off here",1,11],
+["mke01",2022,"1.01 &middot; The Goldfish Problem","",0,11,"Moon Knight"],
+["mke02",2022,"1.02 &middot; Summon the Suit","",0,11,"Moon Knight"],
+["mke03",2022,"1.03 &middot; The Friendly Type","",0,11,"Moon Knight"],
+["mke04",2022,"1.04 &middot; The Tomb","",0,11,"Moon Knight"],
+["mke05",2022,"1.05 &middot; Asylum","",0,11,"Moon Knight"],
+["mke06",2022,"1.06 &middot; Gods and Monsters","",0,11,"Moon Knight"],
+["morbius",2022,"Morbius","April &middot; Sony",0,11],
+["mom",2022,"Doctor Strange in the Multiverse of Madness","May &middot; a Patrick Stewart Xavier",1,11],
+["mse01",2022,"1.01 &middot; Generation Why","",0,11,"Ms. Marvel"],
+["mse02",2022,"1.02 &middot; Crushed","",0,11,"Ms. Marvel"],
+["mse03",2022,"1.03 &middot; Destined","",0,11,"Ms. Marvel"],
+["mse04",2022,"1.04 &middot; Seeing Red","",0,11,"Ms. Marvel"],
+["mse05",2022,"1.05 &middot; Time and Again","",0,11,"Ms. Marvel"],
+["mse06",2022,"1.06 &middot; No Normal","",0,11,"Ms. Marvel"],
+["lat",2022,"Thor: Love and Thunder","July",0,11],
+["she01",2022,"1.01 &middot; A Normal Amount of Rage","",0,11,"She-Hulk: Attorney at Law"],
+["she02",2022,"1.02 &middot; Superhuman Law","",0,11,"She-Hulk: Attorney at Law"],
+["she03",2022,"1.03 &middot; The People vs. Emil Blonsky","",0,11,"She-Hulk: Attorney at Law"],
+["she04",2022,"1.04 &middot; Is This Not Real Magic?","",0,11,"She-Hulk: Attorney at Law"],
+["she05",2022,"1.05 &middot; Mean, Green, and Straight Poured into These Jeans","",0,11,"She-Hulk: Attorney at Law"],
+["she06",2022,"1.06 &middot; Just Jen","",0,11,"She-Hulk: Attorney at Law"],
+["she07",2022,"1.07 &middot; The Retreat","",0,11,"She-Hulk: Attorney at Law"],
+["she08",2022,"1.08 &middot; Ribbit and Rip It","",0,11,"She-Hulk: Attorney at Law"],
+["she09",2022,"1.09 &middot; Whose Show Is This?","",0,11,"She-Hulk: Attorney at Law"],
+["wbn",2022,"Werewolf by Night","October &middot; special &middot; 53m",0,11],
+["wf",2022,"Black Panther: Wakanda Forever","November &middot; Shuri, Namor, Namora, M&rsquo;Baku",1,12],
+["holiday",2022,"The Guardians of the Galaxy Holiday Special","November &middot; special &middot; 44m",0,12],
+["quantum",2023,"Ant-Man and the Wasp: Quantumania","February &middot; Cassie Lang",0,12],
+["gotg3",2023,"Guardians of the Galaxy Vol. 3","May",0,12],
+["sie01",2023,"1.01 &middot; Resurrection","",0,12,"Secret Invasion"],
+["sie02",2023,"1.02 &middot; Promises","",0,12,"Secret Invasion"],
+["sie03",2023,"1.03 &middot; Betrayed","",0,12,"Secret Invasion"],
+["sie04",2023,"1.04 &middot; Beloved","",0,12,"Secret Invasion"],
+["sie05",2023,"1.05 &middot; Harvest","",0,12,"Secret Invasion"],
+["sie06",2023,"1.06 &middot; Home","",0,12,"Secret Invasion"],
+["lk2e01",2023,"2.01 &middot; Ouroboros","",1,12,"Loki &mdash; Season 2"],
+["lk2e02",2023,"2.02 &middot; Breaking Brad","",0,12,"Loki &mdash; Season 2"],
+["lk2e03",2023,"2.03 &middot; 1893","",0,12,"Loki &mdash; Season 2"],
+["lk2e04",2023,"2.04 &middot; Heart of the TVA","",0,12,"Loki &mdash; Season 2"],
+["lk2e05",2023,"2.05 &middot; Science/Fiction","",0,12,"Loki &mdash; Season 2"],
+["lk2e06",2023,"2.06 &middot; Glorious Purpose","",0,12,"Loki &mdash; Season 2"],
+["marvels",2023,"The Marvels","November &middot; the Beast credits scene",1,12],
+["ece01",2024,"1.01 &middot; Chafa","",0,12,"Echo"],
+["ece02",2024,"1.02 &middot; Lowak","",0,12,"Echo"],
+["ece03",2024,"1.03 &middot; Tuklo","",0,12,"Echo"],
+["ece04",2024,"1.04 &middot; Taloa","",0,12,"Echo"],
+["ece05",2024,"1.05 &middot; Maya","",0,12,"Echo"],
+["madameweb",2024,"Madame Web","February &middot; Sony",0,12],
+["dpw",2024,"Deadpool &amp; Wolverine","July &middot; Gambit debuts, Snipes returns",1,12],
+["age01",2024,"1.01 &middot; Seekest Thou the Road","",0,12,"Agatha All Along"],
+["age02",2024,"1.02 &middot; Circle Sewn with Fate / Unlock Thy Hidden Gate","",0,12,"Agatha All Along"],
+["age03",2024,"1.03 &middot; Through Many Miles / Of Tricks and Trials","",0,12,"Agatha All Along"],
+["age04",2024,"1.04 &middot; If I Can&rsquo;t Reach You / Let My Song Teach You","",0,13,"Agatha All Along"],
+["age05",2024,"1.05 &middot; Darkest Hour / Wake Thy Power","",0,13,"Agatha All Along"],
+["age06",2024,"1.06 &middot; Familiar by Thy Side","",0,13,"Agatha All Along"],
+["age07",2024,"1.07 &middot; Death&rsquo;s Hand in Mine","",0,13,"Agatha All Along"],
+["age08",2024,"1.08 &middot; Follow Me My Friend / To Glory at the End","",0,13,"Agatha All Along"],
+["age09",2024,"1.09 &middot; Maiden Mother Crone","",0,13,"Agatha All Along"],
+["venom3",2024,"Venom: The Last Dance","October &middot; Sony",0,13],
+["kraven",2024,"Kraven the Hunter","December &middot; Sony",0,13],
+["bnw",2025,"Captain America: Brave New World","February &middot; Sam, Joaqu&iacute;n, the faction split",0,13],
+["b1e01",2025,"1.01 &middot; Heaven&rsquo;s Half Hour","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e02",2025,"1.02 &middot; Optics","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e03",2025,"1.03 &middot; The Hollow of His Hand","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e04",2025,"1.04 &middot; Sic Semper Systema","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e05",2025,"1.05 &middot; With Interest","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e06",2025,"1.06 &middot; Excessive Force","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e07",2025,"1.07 &middot; Art for Art&rsquo;s Sake","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e08",2025,"1.08 &middot; Isle of Joy","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["b1e09",2025,"1.09 &middot; Straight to Hell","",0,13,"Daredevil: Born Again &mdash; Season 1"],
+["tbolts",2025,"Thunderbolts*","May &middot; Doomsday starts 14 months after this",1,13],
+["ihe01",2025,"1.01 &middot; Take Me Home","",0,13,"Ironheart"],
+["ihe02",2025,"1.02 &middot; Will the Real Natalie Please Stand Up?","",0,13,"Ironheart"],
+["ihe03",2025,"1.03 &middot; We in Danger, Girl","",0,13,"Ironheart"],
+["ihe04",2025,"1.04 &middot; Bad Magic","",0,13,"Ironheart"],
+["ihe05",2025,"1.05 &middot; Karma&rsquo;s a Glitch","",0,13,"Ironheart"],
+["ihe06",2025,"1.06 &middot; The Past Is the Past","",0,13,"Ironheart"],
+["ff25",2025,"The Fantastic Four: First Steps","July &middot; Reed, Sue, Johnny, Ben",1,13],
+["wme01",2026,"1.01 &middot; Matinee","",0,13,"Wonder Man"],
+["wme02",2026,"1.02 &middot; Self-Tape","",0,13,"Wonder Man"],
+["wme03",2026,"1.03 &middot; Pacoima","",0,13,"Wonder Man"],
+["wme04",2026,"1.04 &middot; Doorman","",0,13,"Wonder Man"],
+["wme05",2026,"1.05 &middot; Found Footage","",0,13,"Wonder Man"],
+["wme06",2026,"1.06 &middot; Callback","",0,13,"Wonder Man"],
+["wme07",2026,"1.07 &middot; Kathy Friedman","",0,13,"Wonder Man"],
+["wme08",2026,"1.08 &middot; Yucca Valley","",0,14,"Wonder Man"],
+["b2e01",2026,"2.01 &middot; The Northern Star","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e02",2026,"2.02 &middot; Shoot the Moon","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e03",2026,"2.03 &middot; The Scales &amp; the Sword","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e04",2026,"2.04 &middot; Gloves Off","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e05",2026,"2.05 &middot; The Grand Design","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e06",2026,"2.06 &middot; Requiem","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e07",2026,"2.07 &middot; The Hateful Darkness","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["b2e08",2026,"2.08 &middot; The Southern Cross","",0,14,"Daredevil: Born Again &mdash; Season 2"],
+["punisher",2026,"The Punisher: One Last Kill","May &middot; special &middot; 1h",0,14],
+["noe01",2026,"1.01 &middot; Step Into My Office","",0,14,"Spider-Noir"],
+["noe02",2026,"1.02 &middot; Tread Lightly","",0,14,"Spider-Noir"],
+["noe03",2026,"1.03 &middot; Double Cross","",0,14,"Spider-Noir"],
+["noe04",2026,"1.04 &middot; A Mistake I&rsquo;ll Never Make Again","",0,14,"Spider-Noir"],
+["noe05",2026,"1.05 &middot; Betrayal","",0,14,"Spider-Noir"],
+["noe06",2026,"1.06 &middot; Nightmare on a Gurney","",0,14,"Spider-Noir"],
+["noe07",2026,"1.07 &middot; Nobody&rsquo;s Hero","",0,14,"Spider-Noir"],
+["noe08",2026,"1.08 &middot; The Man in the Mask","",0,14,"Spider-Noir"],
+["bnd",2026,"Spider-Man: Brand New Day","July",0,14],
+["vqe01",2026,"1.01 &middot; Episode 1","",1,5,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe02",2026,"1.02 &middot; Episode 2","",0,6,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe03",2026,"1.03 &middot; Episode 3","",0,7,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe04",2026,"1.04 &middot; Episode 4","",0,8,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe05",2026,"1.05 &middot; Episode 5","",0,9,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe06",2026,"1.06 &middot; Episode 6","",0,10,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe07",2026,"1.07 &middot; Episode 7","",0,11,"VisionQuest &middot; weekly from Oct 14, titles TBA"],
+["vqe08",2026,"1.08 &middot; Episode 8","",0,12,"VisionQuest &middot; weekly from Oct 14, titles TBA"]
+];
+let DAY=[0,0,1,1,2,2,3,3,4,4,5,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,16,16,16,16,17,17,17,17,17,18,18,18,18,19,19,19,20,20,20,21,21,21,21,22,22,22,22,22,23,23,23,24,24,24,24,24,25,25,25,25,26,26,26,26,27,27,28,28,28,28,28,29,29,29,29,30,30,30,30,31,31,32,32,32,32,32,33,33,33,33,34,34,34,34,35,35,35,36,36,36,36,37,37,37,38,38,38,38,39,39,39,39,39,40,40,40,40,41,41,41,42,42,42,42,43,43,43,43,43,44,44,44,45,45,46,46,46,46,47,47,47,47,47,48,48,48,48,49,49,49,49,50,50,50,50,50,51,51,51,52,52,52,52,53,53,53,53,53,54,54,54,54,54,55,55,55,55,56,56,56,56,57,57,57,57,58,58,59,59,60,60,60,60,60,61,61,61,61,62,62,62,62,63,63,63,63,64,64,64,64,64,64,65,65,65,65,66,66,66,66,66,67,67,67,67,68,68,69,69,69,70,70,70,70,71,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,75,75,76,76,76,76,76,77,77,77,78,78,79,79,79,79,80,80,80,80,80,80,81,81,81,81,82,82,82,82,83,83,83,83,84,84,84,84,84,84,85,85,86,86,86,86,86,87,87,87,87,87,88,88,88,88,89,89,89,89,90,90,90,90,90,90,90,91,91,91,91,91,92,92,92,92,92,93,93,93,93,93,93,94,94,94,30,37,44,51,58,65,72,79];
+
+
+const ROT=new Set(["blade1","blade2","blade3","pun04","warzone","ghostrider","ghostrider2",
+"sm1","sm2","sm3","tasm1","tasm2","homecoming","ffh","nwh","bnd",
+"venom1","venom2","venom3","morbius","madameweb","kraven"]);
+const ROTSER=new Set([]);
+const NAMED={no:"MGM+ / Prime Video"};
+function base(id){const m=id.match(/^(.+)e\d{2}$/);return m?m[1]:id;}
+function svc(id){const b=base(id);
+  if(NAMED[b])return '<span class="sv rot">'+NAMED[b]+'</span>';
+  if(ROT.has(b)||ROTSER.has(b))return '<span class="sv rot">rights rotate &middot; check JustWatch</span>';
+  return '<span class="sv">Disney+</span>';}
+
+const RT={blade1:120,xmen:104,blade2:117,sm1:121,dd03:103,x2:134,pun04:124,sm2:127,blade3:123,
+elektra:97,ff05:106,last:104,ghostrider:114,sm3:139,surfer:92,im1:126,hulk:112,warzone:103,
+origins:107,im2:124,thor1:115,first:131,ca1:124,ghostrider2:95,avengers:143,tasm1:136,im3:130,
+wolv:126,tdw:112,catws:136,tasm2:142,dofp:132,gotg:121,aou:141,antman:117,ff15:100,dp1:108,
+civil:147,apoc:144,strange:115,logan:137,gotg2:136,homecoming:133,ragnarok:130,bp:134,iw:149,
+dp2:119,atw:118,venom1:112,cm:123,endgame:181,phoenix:113,ffh:129,mutants:94,bw:134,shang:132,
+venom2:97,eternals:156,nwh:148,morbius:104,mom:126,lat:119,wbn:53,wf:161,holiday:44,quantum:124,
+gotg3:150,marvels:105,madameweb:116,dpw:128,venom3:109,kraven:127,bnw:118,tbolts:127,ff25:115,
+punisher:60,bnd:145};
+const EPRT={wm:31,no:45,ndd1:52,ndd2:52,ndd3:52,jj1:55,jj2:55,jj3:55,lc1:52,lc2:52,if1:50,if2:50,def:52,
+pu1:55,pu2:55,wv:35,tf:50,lk1:48,hw:45,mk:45,ms:45,sh:33,si:43,lk2:45,ec:40,ag:35,b1:45,
+ih:48,b2:45,vq:45};
+const EPX={age01:42,age02:44,age03:39,age04:44,age05:32,age06:47,age07:36,age08:49,age09:42,b1e01:58,b1e02:47,b1e03:44,b1e04:52,b1e05:39,b1e06:42,b1e07:40,b1e08:47,b1e09:57,b2e01:51,b2e02:46,b2e03:47,b2e04:51,b2e05:50,b2e06:49,b2e07:44,b2e08:51,defe01:51,defe02:44,defe03:54,defe04:44,defe05:50,defe06:50,defe07:45,defe08:55,ece01:49,ece02:39,ece03:42,ece04:37,ece05:34,hwe01:49,hwe02:51,hwe03:43,hwe04:40,hwe05:44,hwe06:61,if1e01:56,if1e02:60,if1e03:59,if1e04:53,if1e05:56,if1e06:52,if1e07:58,if1e08:54,if1e09:54,if1e10:56,if1e11:52,if1e12:49,if1e13:53,if2e01:56,if2e02:52,if2e03:51,if2e04:52,if2e05:54,if2e06:50,if2e07:53,if2e08:48,if2e09:49,if2e10:51,ihe01:41,ihe02:48,ihe03:53,ihe04:50,ihe05:57,ihe06:40,jj1e01:52,jj1e02:52,jj1e03:53,jj1e04:48,jj1e05:49,jj1e06:53,jj1e07:54,jj1e08:49,jj1e09:55,jj1e10:46,jj1e11:50,jj1e12:53,jj1e13:52,jj2e01:53,jj2e02:55,jj2e03:54,jj2e04:49,jj2e05:52,jj2e06:48,jj2e07:53,jj2e08:49,jj2e09:49,jj2e10:54,jj2e11:48,jj2e12:46,jj2e13:52,jj3e01:51,jj3e02:54,jj3e03:55,jj3e04:45,jj3e05:52,jj3e06:53,jj3e07:50,jj3e08:43,jj3e09:51,jj3e10:49,jj3e11:47,jj3e12:48,jj3e13:50,lc1e01:55,lc1e02:59,lc1e03:57,lc1e04:53,lc1e05:52,lc1e06:53,lc1e07:52,lc1e08:49,lc1e09:66,lc1e10:48,lc1e11:51,lc1e12:62,lc1e13:46,lc2e01:56,lc2e02:55,lc2e03:60,lc2e04:54,lc2e05:57,lc2e06:64,lc2e07:55,lc2e08:55,lc2e09:59,lc2e10:59,lc2e11:56,lc2e12:62,lc2e13:69,lk1e01:52,lk1e02:54,lk1e03:42,lk1e04:48,lk1e05:49,lk1e06:46,lk2e01:47,lk2e02:51,lk2e03:55,lk2e04:50,lk2e05:46,lk2e06:58,mke01:47,mke02:53,mke03:53,mke04:53,mke05:50,mke06:42,mse01:49,mse02:51,mse03:47,mse04:48,mse05:41,mse06:49,ndd1e01:55,ndd1e02:54,ndd1e03:54,ndd1e04:54,ndd1e05:57,ndd1e06:50,ndd1e07:52,ndd1e08:55,ndd1e09:59,ndd1e10:58,ndd1e11:60,ndd1e12:60,ndd1e13:57,ndd2e01:48,ndd2e02:49,ndd2e03:48,ndd2e04:60,ndd2e05:55,ndd2e06:55,ndd2e07:56,ndd2e08:54,ndd2e09:59,ndd2e10:52,ndd2e11:55,ndd2e12:52,ndd2e13:57,ndd3e01:52,ndd3e02:49,ndd3e03:48,ndd3e04:53,ndd3e05:48,ndd3e06:53,ndd3e07:49,ndd3e08:49,ndd3e09:53,ndd3e10:45,ndd3e11:49,ndd3e12:54,ndd3e13:53,noe01:47,noe02:43,noe03:47,noe04:49,noe05:50,noe06:43,noe07:43,noe08:48,pu1e01:51,pu1e02:56,pu1e03:57,pu1e04:48,pu1e05:54,pu1e06:54,pu1e07:48,pu1e08:52,pu1e09:53,pu1e10:48,pu1e11:51,pu1e12:50,pu1e13:55,pu2e01:52,pu2e02:54,pu2e03:50,pu2e04:57,pu2e05:50,pu2e06:56,pu2e07:51,pu2e08:48,pu2e09:57,pu2e10:46,pu2e11:54,pu2e12:49,pu2e13:57,she01:38,she02:30,she03:34,she04:36,she05:31,she06:31,she07:35,she08:36,she09:35,sie01:53,sie02:56,sie03:42,sie04:36,sie05:37,sie06:36,tfe01:49,tfe02:50,tfe03:53,tfe04:53,tfe05:60,tfe06:51,wme01:32,wme02:32,wme03:32,wme04:30,wme05:23,wme06:34,wme07:33,wme08:32,wve01:30,wve02:37,wve03:33,wve04:35,wve05:42,wve06:38,wve07:38,wve08:47,wve09:50};
+const APPROX=new Set(["punisher"]);
+const PC={antman:2,aou:1,apoc:1,atw:2,avengers:2,bnd:1,bnw:1,bp:2,bw:1,ca1:1,catws:2,civil:2,cm:2,dd03:1,dofp:1,dp1:1,dp2:1,dpw:1,ece05:1,eternals:2,ff25:2,ffh:2,gotg:1,gotg2:5,gotg3:2,homecoming:2,hwe06:1,im1:1,im2:1,im3:1,iw:1,last:1,lat:2,lk1e04:1,lk2e01:1,marvels:1,mke06:1,mom:2,morbius:2,mse01:1,mse06:1,nwh:1,origins:1,quantum:2,ragnarok:2,shang:2,she01:1,she02:1,she03:1,she04:1,she09:1,strange:2,surfer:1,tasm1:1,tasm2:1,tbolts:2,tdw:2,tfe05:1,tfe06:1,thor1:1,venom1:2,venom2:1,venom3:2,wf:1,wolv:1,wve07:1,wve08:1,wve09:2};
+const FOX=new Set(["xmen","x2","last","origins","first","wolv","dofp","apoc","logan","phoenix","mutants","dp1","dp2","ff05","surfer","ff15","dd03","elektra"]);
+const SONY=new Set(["sm1","sm2","sm3","tasm1","tasm2","venom1","venom2","venom3","morbius","madameweb","kraven","no"]);
+const NFLX=new Set(["ndd1","ndd2","ndd3","jj1","jj2","jj3","lc1","lc2","if1","if2","def","pu1","pu2"]);
+const OTHR=new Set(["blade1","blade2","blade3","pun04","warzone","ghostrider","ghostrider2"]);
+function grp(id){const b=base(id);
+  if(FOX.has(b))return "fox"; if(SONY.has(b))return "sony";
+  if(NFLX.has(b))return "nflx"; if(OTHR.has(b))return "othr"; return "mcu";}
+function mins(id){if(EPX[id]!==undefined)return EPX[id];
+  const b=base(id);return EPRT[b]!==undefined?EPRT[b]:(RT[id]||0);}
+function exact(id){return EPX[id]!==undefined||(base(id)===id&&!APPROX.has(id));}
+function isApprox(id){return !exact(id);}
+function fmt(m){if(!m)return "";const h=Math.floor(m/60),r=Math.round(m%60);
+  return h?(r?h+"h "+r+"m":h+"h"):r+"m";}
+function rt(id){const m=mins(id);if(!m)return "";
+  return `<span class="rt">${isApprox(id)?"~":""}${fmt(m)}</span>`
+    +(PC[id]?`<span class="pc" title="${PC[id]} credits scene${PC[id]===1?"":"s"} \u2014 stay put">+${PC[id]}</span>`:"");}
+const START=new Date(2026,8,14);
+function dayDate(i){const d=new Date(START);d.setDate(d.getDate()+DAY[i]);return d;}
+const DOW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(d){return DOW[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()];}
+function todayOff(){const n=new Date();n.setHours(0,0,0,0);return Math.round((n-START)/86400000);}
+let todayOnly=false;
+let byDate=false;
+let q="";
+let hist=[];
+function snap(){hist.push([new Set(done),new Set(skip)]); if(hist.length>40)hist.shift();}
+function undo(){if(!hist.length)return; const h=hist.pop(); done=h[0]; skip=h[1]; render(); save();}
+function replan(){
+  const t=Math.max(0,todayOff()), LAST=94;
+  if(t>LAST)return;
+  const rem=[]; DATA.forEach((d,i)=>{if(!done.has(d[0])&&!skip.has(d[0]))rem.push(i);});
+  if(!rem.length)return;
+  const nd=LAST-t+1, pin={};
+  rem.forEach(i=>{const id=DATA[i][0];
+    if(id.indexOf("vqe")===0)pin[i]=Math.max(t,30+7*(parseInt(id.slice(4),10)-1));});
+  let total=0; rem.forEach(i=>total+=mins(DATA[i][0]));
+  const per=total/nd, cap=[];
+  for(let k=0;k<nd;k++)cap.push(per);
+  Object.keys(pin).forEach(i=>{const k=pin[i]-t; if(k>=0&&k<nd)cap[k]-=mins(DATA[i][0]);});
+  const cum=[]; let r=0; for(let k=0;k<nd;k++){r+=cap[k];cum.push(r);}
+  let k=0, run=0;
+  rem.forEach(i=>{
+    if(pin[i]!==undefined){DAY[i]=pin[i];return;}
+    const m=mins(DATA[i][0]);
+    while(k<nd-1&&run+m/2>cum[k])k++;
+    DAY[i]=t+k; run+=m;
+  });
+  DATA.forEach((d,i)=>{d[5]=Math.min(14,Math.floor(DAY[i]/7)+1);});
+}
+let skip=new Set();
+const openY=new Set(), openS=new Set();
+function live(d){return !skip.has(d[0]);}
+function liveMins(){let m=0;DATA.forEach(d=>{if(live(d)&&!done.has(d[0]))m+=mins(d[0]);});return m;}
+function overdue(){let c=0,m=0;const t=todayOff();
+  DATA.forEach((d,i)=>{if(live(d)&&!done.has(d[0])&&DAY[i]<t){c++;m+=mins(d[0]);}});
+  return {c:c,m:m};}
+function aheadCount(){const t=todayOff();let c=0;
+  DATA.forEach((d,i)=>{if(live(d)&&done.has(d[0])&&DAY[i]>t)c++;});return c;}
+const IDX={}; DATA.forEach((d,i)=>{IDX[d[0]]=i;});
+let weekOnly=false;
+const YMAX=(()=>{const c={};DATA.forEach(d=>c[d[1]]=(c[d[1]]||0)+1);return Math.max(...Object.values(c));})();
+function lerp(a,b,t){return Math.round(a+(b-a)*t);}
+function hx(a,b,t){return "#"+[0,1,2].map(i=>lerp(a[i],b[i],t).toString(16).padStart(2,"0")).join("");}
+function tint(){
+  const r=document.documentElement; if(!r||!r.style||!r.style.setProperty)return;
+  const p=Math.max(0,Math.min(1,todayOff()/94));
+  r.style.setProperty("--iron",  hx([0x23,0x27,0x1D],[0x1A,0x23,0x31],p));
+  r.style.setProperty("--iron-2",hx([0x2E,0x33,0x29],[0x22,0x2B,0x3A],p));
+  r.style.setProperty("--rule",  hx([0x42,0x48,0x39],[0x35,0x41,0x53],p));
+}
+function curWeek(){return Math.min(14,Math.max(1,Math.ceil(weekNow())||1));}
+const KEY="doomsday-watchlist-v4";
+let done=new Set(), hiding=false;
+const $list=document.getElementById("list"),$n=document.getElementById("n"),
+      $days=document.getElementById("days");
+
+const W1=new Date(2026,8,14);
+function weekNow(){
+  const d=Math.floor((new Date()-W1)/86400000);
+  if(d<0)return 0;
+  return Math.min(14.999,1+d/7);
+}
+function drawWeeks(){
+  const wn=weekNow(); let html="", expected=0;
+  for(let w=1;w<=14;w++){
+    const g=DATA.filter(d=>d[5]===w&&live(d));
+    const dn=g.filter(d=>done.has(d[0])).length;
+    let tgt=0;
+    if(wn>=w+1){expected+=g.length;tgt=100;}
+    else if(wn>w){expected+=g.length*(wn-w);tgt=(wn-w)*100;}
+    const pct=g.length?dn/g.length*100:0;
+    const cur=(wn>=w&&wn<w+1)?" now":"";
+    const short=pct<tgt-1?" short":"";
+    const tm=g.reduce((t,r)=>t+mins(r[0]),0)||1, seg={};
+    g.forEach(r=>{const k=grp(r[0]); seg[k]=(seg[k]||0)+mins(r[0]);});
+    const comp=Object.keys(seg).map(k=>`<u class="g-${k}" style="flex:0 0 ${(seg[k]/tm*100).toFixed(1)}%"></u>`).join("");
+    html+=`<div class="wk${cur}${short}" title="Week ${w}: ${dn}/${g.length} &middot; ${fmt(tm)} &middot; target ${Math.round(tgt)}%">`
+      +`<span class="comp">${comp}</span>`
+      +`<i style="height:${pct.toFixed(0)}%"></i>`
+      +(tgt>0?`<s style="bottom:${Math.min(100,tgt).toFixed(0)}%"></s>`:"")
+      +`<em>${w}</em></div>`;
+  }
+  document.getElementById("weeks").innerHTML=html;
+  const pe=document.getElementById("pace"), od=overdue();
+  if(todayOff()<0){pe.innerHTML=`Starts Mon 14 Sep &middot; <em>${DATA.filter((d,i)=>DAY[i]===0).length}</em> on day one`;pe.className="pace";}
+  else if(od.c>0){
+    const dl=Math.max(1,daysLeft()), norm=liveMins()/dl;
+    const days=Math.ceil(od.m/Math.max(1,norm));
+    pe.innerHTML=`<em>${od.c}</em> behind &middot; ${fmt(od.m)} to make up`
+      +(days>0?` &middot; ${fmt(norm+od.m/Math.max(1,days))} a day for ${days} day${days===1?"":"s"} to get level`:"");
+    pe.className="pace down";}
+  else{const a=aheadCount();
+    pe.innerHTML=a>0?`<em>${a}</em> ahead of schedule`:`<em>Level</em> with the schedule`;
+    pe.className="pace up";}
+}
+function expectedCount(){
+  const wn=weekNow(); let e=0;
+  for(let w=1;w<=14;w++){const g=DATA.filter(d=>d[5]===w).length;
+    if(wn>=w+1)e+=g; else if(wn>w)e+=g*(wn-w);}
+  return Math.min(DATA.length,Math.round(e));
+}
+function timeline(svgId,idx,accent){
+  const yrs=[...new Set(DATA.map(d=>d[1]))];
+  const cum={}; let run=0;
+  yrs.forEach(y=>{cum[y]=run; run+=DATA.filter(d=>d[1]===y).length;});
+  const X=y=>16+(cum[y]/DATA.length)*308;
+  const atEnd=idx>=DATA.length, cy=atEnd?yrs[yrs.length-1]:DATA[idx][1];
+  const mx=atEnd?324:16+(idx/DATA.length)*308;
+  let g='';
+  yrs.forEach(y=>{const x=X(y).toFixed(1); const on=y<cy;
+    g+=`<line x1="${x}" y1="56" x2="${x}" y2="${y%10===0||y===2026?64:61}"
+      stroke="${on?accent:'var(--rule)'}" stroke-width="1" opacity="${on?.65:1}"/>`;});
+  let lastX=-99;
+  yrs.forEach((y,i)=>{const x=X(y);
+    if(i!==0&&i!==yrs.length-1&&x-lastX<46)return;
+    if(i===yrs.length-1&&x-lastX<30)return;
+    lastX=x;
+    g+=`<text x="${x.toFixed(1)}" y="78" text-anchor="middle" font-size="9"
+      fill="var(--muted)" font-family="Archivo,sans-serif">${y}</text>`;});
+  const m=mx.toFixed(1);
+  document.getElementById(svgId).innerHTML=`
+    <line x1="16" y1="56" x2="324" y2="56" stroke="var(--rule)" stroke-width="1.5"/>
+    <line x1="16" y1="56" x2="${m}" y2="56" stroke="${accent}" stroke-width="2.5"/>
+    ${g}
+    <g transform="translate(${m},30)">
+      <path d="M0,-20 L17,-11 L17,10 L0,20 L-17,10 L-17,-11 Z"
+        fill="#2C3A34" stroke="${accent}" stroke-width="1.6"/>
+      <path d="M0,-20 L17,-11 L17,10 L0,20 L-17,10 L-17,-11 Z"
+        fill="none" stroke="${accent}" stroke-width="0.8" opacity=".5" transform="scale(.78)"/>
+      <circle cx="-11" cy="-8" r="1.5" fill="${accent}"/>
+      <circle cx="11" cy="-8" r="1.5" fill="${accent}"/>
+      <circle cx="-11" cy="9" r="1.5" fill="${accent}"/>
+      <circle cx="11" cy="9" r="1.5" fill="${accent}"/>
+      <text y="4" text-anchor="middle" font-size="11" font-weight="600"
+        fill="var(--parchment)" font-family="Archivo,sans-serif">${cy}</text>
+    </g>
+    <line x1="${m}" y1="50" x2="${m}" y2="56" stroke="${accent}" stroke-width="1.6"/>`;
+  return {cy,atEnd};
+}
+function drawBurn(){
+  const el=document.getElementById("burn"); if(!el)return;
+  let total=0; DATA.forEach(d=>{if(live(d))total+=mins(d[0]);});
+  const left=liveMins(), t=Math.max(0,Math.min(94,todayOff()));
+  const X=d=>16+(d/94)*308, Y=m=>132-(m/(total||1))*108;
+  let g=`<line x1="16" y1="132" x2="324" y2="132" stroke="var(--rule)"/>`
+    +`<line x1="16" y1="24" x2="16" y2="132" stroke="var(--rule)"/>`
+    +`<line x1="${X(0)}" y1="${Y(total)}" x2="${X(94)}" y2="${Y(0)}" stroke="var(--crimson)" stroke-width="2" stroke-dasharray="4 3"/>`;
+  const px=X(t), py=Y(left);
+  if(todayOff()>0){
+    const rate=(total-left)/Math.max(1,t);
+    const fin=rate>0?total/rate:999;
+    const ex=Math.min(94,fin);
+    g+=`<line x1="${X(0)}" y1="${Y(total)}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="var(--brass)" stroke-width="2.5"/>`;
+    if(rate>0)g+=`<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="${X(ex).toFixed(1)}" y2="${Y(Math.max(0,left-rate*(ex-t))).toFixed(1)}" stroke="var(--brass)" stroke-width="1.5" stroke-dasharray="3 3" opacity=".6"/>`;
+    g+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4" fill="var(--brass)"/>`;
+    const d=Math.round(fin);
+    document.getElementById("burncap").innerHTML=rate<=0
+      ? `Nothing watched yet &middot; <em class="r">${Math.round(total/60)}h</em> in ${94-t} days means ${fmt((left)/Math.max(1,94-t))} a day`
+      : (d<=94?`At this pace you finish on day <em>${d}</em> of 95 &mdash; <em>${94-d}</em> day${94-d===1?"":"s"} spare`
+              :`At this pace you finish ${d-94} day${d-94===1?"":"s"} late`);
+  } else {
+    document.getElementById("burncap").innerHTML=`<em>${Math.round(total/60)}h</em> to burn down over 95 days`;
+  }
+  [0,94].forEach(d=>g+=`<text x="${X(d)}" y="146" text-anchor="${d?"end":"start"}" font-size="9" fill="var(--muted)" font-family="Archivo,sans-serif">${d?"18 Dec":"14 Sep"}</text>`);
+  g+=`<text x="20" y="20" font-size="9" fill="var(--muted)" font-family="Archivo,sans-serif">${Math.round(total/60)}h</text>`;
+  el.innerHTML=g;
+}
+function drawHist(){
+  const el=document.getElementById("hist"); if(!el)return;
+  const B=[[0,30,"<30m"],[30,45,"30-45"],[45,60,"45-60"],[60,90,"1-1.5h"],[90,120,"1.5-2h"],[120,150,"2-2.5h"],[150,999,"2.5h+"]];
+  const c=B.map(()=>0);
+  DATA.forEach(d=>{if(!live(d))return;const m=mins(d[0]);
+    B.forEach((b,i)=>{if(m>=b[0]&&m<b[1])c[i]++;});});
+  const mx=Math.max(...c)||1, w=308/B.length;
+  let g="";
+  c.forEach((n,i)=>{const h=(n/mx)*88, x=16+i*w;
+    g+=`<rect x="${(x+3).toFixed(1)}" y="${(104-h).toFixed(1)}" width="${(w-6).toFixed(1)}" height="${h.toFixed(1)}" fill="var(--verdigris)" opacity=".75" rx="2"/>`
+      +`<text x="${(x+w/2).toFixed(1)}" y="${(100-h).toFixed(1)}" text-anchor="middle" font-size="9" fill="var(--parchment)" font-family="Archivo,sans-serif">${n}</text>`
+      +`<text x="${(x+w/2).toFixed(1)}" y="118" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="Archivo,sans-serif">${B[i][2]}</text>`;});
+  el.innerHTML=g;
+  const short=c[0]+c[1];
+  document.getElementById("histcap").innerHTML=`<em>${short}</em> entries under 45 minutes &middot; <em>${c[5]+c[6]}</em> over two hours`;
+}
+const THREADS=[
+ ["The Fox mutants become importable","fox",["xmen","x2","last","dofp","logan","marvels","dpw"],
+  "Six returning X-Men actors come from these. The Marvels&rsquo; credits scene and Deadpool &amp; Wolverine are the hinge that lets them cross over."],
+ ["How the multiverse actually works","mcu",["wve01","lk1e01","nwh","mom","lk2e01"],
+  "Loki sets the rules, No Way Home proves actors can cross studio lines, Multiverse of Madness shows an incursion."],
+ ["The New Avengers assemble","mcu",["bw","bnw","tbolts"],
+  "Doomsday reportedly opens fourteen months after Thunderbolts*. This is the roster walking in."],
+ ["Doom, and the family he&rsquo;s coming for","othr",["im1","ff05","ff15","ff25"],
+  "Downey played Stark; now he plays Doom. Three earlier Dooms for contrast, then the Four arrive."]];
+function shortName(id){const d=DATA[IDX[id]];if(!d)return id;
+  return d[6]?d[6].split(" &middot; ")[0]:d[2];}
+function drawThreads(){
+  const el=document.getElementById("threads"); if(!el)return;
+  el.innerHTML=THREADS.map(t=>{
+    const chips=t[2].map(id=>{const d=DATA[IDX[id]];if(!d)return "";
+      const on=done.has(id);
+      return `<span class="chip g-${grp(id)}${on?" on":""}">${shortName(id)}<b>wk ${d[5]}</b></span>`;}).join("");
+    return `<div class="lane g-${t[1]}"><p class="lane-h">${t[0]}</p><div class="chips">${chips}</div><p class="lane-n">${t[3]}</p></div>`;
+  }).join("")+`<div class="lane end"><p class="lane-h">Avengers: Doomsday &middot; 18 Dec</p></div>`;
+}
+function drawCal(){
+  const el=document.getElementById("cal"); if(!el)return;
+  const t=todayOff(); let cells="",cleared=0,pastDays=0,streak=0,best=0;
+  for(let d=0;d<95;d++){
+    const g=DATA.filter((x,i)=>DAY[i]===d&&live(x));
+    const dn=g.filter(x=>done.has(x[0])).length;
+    let cls="c-future";
+    if(d<t){pastDays++;
+      if(g.length&&dn===g.length){cls="c-full";cleared++;streak++;best=Math.max(best,streak);}
+      else if(dn>0){cls="c-part";streak=0;}
+      else{cls="c-miss";streak=0;}}
+    else if(d===t)cls="c-today";
+    let m=0;g.forEach(x=>m+=mins(x[0]));
+    cells+=`<i class="${cls}" title="${fmtDate(dayDate(DAY.indexOf(d)))} &middot; ${dn}/${g.length} &middot; ${fmt(m)}"></i>`;
+  }
+  el.innerHTML=cells;
+  document.getElementById("calcap").innerHTML= t<=0
+    ? "Nothing to show yet &mdash; the schedule starts Mon 14 Sep"
+    : `<em>${cleared}</em> of ${pastDays} past day${pastDays===1?"":"s"} cleared &middot; best run <em>${best}</em>`;
+}
+function drawNext(){
+  let i=0; while(i<DATA.length&&(done.has(DATA[i][0])||skip.has(DATA[i][0])))i++;
+  const el=document.getElementById("nextup");
+  if(i>=DATA.length){
+    let wm=0,sm=0; DATA.forEach(x=>{if(done.has(x[0]))wm+=mins(x[0]);else if(skip.has(x[0]))sm+=mins(x[0]);});
+    const dl=daysLeft();
+    el.innerHTML='<span class="nu-lab">The list is finished</span>'
+      +`<span class="nu-name">${fmt(wm)} watched &middot; ${done.size} entries</span>`
+      +`<span class="nu-meta">${skip.size?skip.size+" skipped ("+fmt(sm)+") &middot; ":""}`
+      +`${dl} day${dl===1?"":"s"} to spare &middot; only Doomsday left</span>`;
+    return;}
+  const d=DATA[i];
+  el.innerHTML=`<span class="nu-lab">Next up</span>`
+    +`<span class="nu-name">${d[6]?d[6].split(" &middot; ")[0]+" &mdash; ":""}${d[2]}</span>`
+    +`<span class="nu-meta">${fmtDate(dayDate(i))} &middot; week ${d[5]} &middot; ${rt(d[0])}${svc(d[0])}</span>`
+    +`<button class="tool go" id="nudone">Mark watched</button>`;
+  document.getElementById("nudone").addEventListener("click",()=>{snap();done.add(d[0]);render();save();});
+}
+function drawYears(){
+  let idx=0; while(idx<DATA.length&&done.has(DATA[idx][0]))idx++;
+  const a=timeline("years",idx,"var(--brass)");
+  const g2=DATA.filter(d=>d[1]===a.cy), dn=g2.filter(d=>done.has(d[0])).length;
+  document.getElementById("ycap").innerHTML=a.atEnd
+    ? "The list is finished. Doomsday is all that&rsquo;s left."
+    : `<em>${a.cy}</em> &middot; ${dn} of ${g2.length} entries from that year done`;
+  const ei=expectedCount();
+  const b=timeline("years2",ei,"var(--crimson)");
+  const gap=ei-idx;
+  document.getElementById("ycap2").innerHTML= weekNow()===0
+    ? "Schedule starts Monday &mdash; nothing owed yet"
+    : b.atEnd ? `<em class="r">Everything</em> &middot; the schedule has run out`
+    : gap>0 ? `<em class="r">${b.cy}</em> &middot; ${gap} entries ahead of you`
+    : `<em class="r">${b.cy}</em> &middot; you&rsquo;re level or ahead`;
+}
+function daysLeft(){return Math.max(0,Math.ceil((new Date(2026,11,18)-new Date())/86400000));}
+
+function rowHTML(d,showSer){
+  const on=done.has(d[0]), i=IDX[d[0]];
+  return `<li class="g-${grp(d[0])} ${on?"done ":""}${skip.has(d[0])?"skipped ":""}${(d[4]&&!d[6])?"key ":""}${d[6]?"ep":""}"><label>`
+    +`<input type="checkbox" data-id="${d[0]}" ${on?"checked":""}>`
+    +`<span class="t"><span class="name">${showSer&&d[6]?`<i class="sn">${d[6].split(" &middot; ")[0]}</i> `:""}${d[2]}</span>`
+    +`<span class="meta">${d[3]}${d[3]?" &middot; ":""}${rt(d[0])}</span>${d[6]&&!showSer?"":svc(d[0])}</span>`
+    +`<span class="wk${DAY[i]<todayOff()&&!on?" late":""}">${showSer?"":fmtDate(dayDate(i))}</span></label>`
+    +`<button class="upto" data-upto="${i}" title="Mark everything up to here">&#8593;</button>`
+    +(d[6]?"":`<button class="skipbtn" data-skip="${d[0]}" title="Skip this">&#215;</button>`)+`</li>`;
+}
+function filt(rows){
+  if(q)rows=rows.filter(d=>((d[6]||"")+" "+d[2]+" "+d[3]).toLowerCase().indexOf(q)>-1);
+  if(todayOnly)return rows.filter(d=>DAY[IDX[d[0]]]===todayOff());
+  if(weekOnly)return rows.filter(d=>d[5]===curWeek());
+  return rows;
+}
+function section(key,label,sub,rows,openSet,attr,h2s){
+  const got=rows.filter(d=>done.has(d[0])||skip.has(d[0])).length;
+  const shut=got===rows.length&&!openSet.has(String(key))&&!weekOnly&&!todayOnly&&!q;
+  let h=`<section class="year${shut?" shut":""}"><div class="year-head" ${attr}="${key}">`
+    +`<h2${h2s?` style="${h2s}"`:""}>${label}</h2><small>${sub}${got}/${rows.length}${shut?" &#10003;":""}</small></div>`;
+  return {h:h,shut:shut,got:got};
+}
+function render(){
+  let html="";
+  if(byDate){
+    const days=[...new Set(DATA.map((d,i)=>DAY[i]))].sort((a,b)=>a-b);
+    days.forEach(off=>{
+      let rows=filt(DATA.filter((d,i)=>DAY[i]===off));
+      if(!rows.length)return;
+      let m=0; rows.forEach(d=>{if(!skip.has(d[0]))m+=mins(d[0]);});
+      const today=off===todayOff();
+      const sec=section("d"+off,fmtDate(dayDate(DATA.indexOf(rows[0]))),
+        `${fmt(m)} &middot; `,rows,openY,"data-year");
+      html+=sec.h.replace('class="year','class="year'+(today?" today":"")+(off<todayOff()?" past":""));
+      if(sec.shut){html+=`</section>`;return;}
+      html+=`<ul>`;
+      rows.forEach(d=>{if(hiding&&done.has(d[0]))return; html+=rowHTML(d,true);});
+      html+=`</ul></section>`;
+    });
+  }else{
+    [...new Set(DATA.map(d=>d[1]))].forEach(y=>{
+      const rows=filt(DATA.filter(d=>d[1]===y));
+      if(!rows.length)return;
+      const all=DATA.filter(d=>d[1]===y).length;
+      const sz=(16.5+(all/YMAX)*14).toFixed(1);
+      const sec=section(y,y,"",rows,openY,"data-year",
+        `font-size:${sz}px;opacity:${(0.62+(all/YMAX)*0.38).toFixed(2)}`);
+      html+=sec.h;
+      if(sec.shut){html+=`</section>`;return;}
+      html+=`<ul>`;
+      let cur=null, serShut=false;
+      rows.forEach(d=>{
+        const ser=d[6]||null;
+        if(ser!==cur){
+          if(ser){
+            const g=rows.filter(r=>r[6]===ser);
+            const gd=g.filter(r=>done.has(r[0])||skip.has(r[0])).length;
+            serShut=gd===g.length&&!openS.has(ser)&&!weekOnly&&!todayOnly&&!q;
+            html+=`<li class="serhead g-${grp(d[0])}${g.every(r=>skip.has(r[0]))?" skipped":""}" data-ser="${ser}"><span>${ser}${g.some(r=>r[4])?'<b class="ring"></b>':''}<span class="rt">${g.length} eps &middot; ${g.every(r=>exact(r[0]))?"":"~"}${fmt(g.reduce((t,r)=>t+mins(r[0]),0))}</span>${g.reduce((t,r)=>t+(PC[r[0]]||0),0)?`<span class="pc" title="credits scenes in this season">+${g.reduce((t,r)=>t+(PC[r[0]]||0),0)}</span>`:""}${svc(d[0])}</span>`
+              +`<span class="shcount">${gd}/${g.length}${serShut?" &#10003;":""}</span>`
+              +`<button class="skipbtn" data-skipser="${ser}" title="Skip this season">&#215;</button></li>`;
+          }
+          cur=ser;
+        }
+        if(ser&&serShut)return;
+        if(hiding&&done.has(d[0]))return;
+        html+=rowHTML(d,false);
+      });
+      html+=`</ul></section>`;
+    });
+  }
+  html+=`<section class="year"><div class="year-head"><h2>The finish line</h2></div><ul>`
+    +`<li class="finale"><label><input type="checkbox" disabled><span class="t">`
+    +`<span class="name">Avengers: Doomsday</span>`
+    +`<span class="meta">Friday 18 December 2026 &middot; 2h 45m</span></span></label></li></ul></section>`;
+  $list.innerHTML=html;
+  $n.textContent=done.size;
+  document.getElementById("of").textContent="of "+(DATA.length-skip.size)+" watched";
+  tint(); drawWeeks(); drawYears(); drawNext(); drawBurn(); drawHist(); drawThreads(); drawCal();
+  const ci=document.getElementById("code");
+  if(ci){ci.value=encode();
+    document.getElementById("codecount").textContent=done.size+" ticked";}
+  const d=daysLeft(),left=DATA.length-done.size-skip.size, mleft=liveMins();
+  $days.innerHTML=`<em>${d}</em> day${d===1?"":"s"} until release &middot; ${left} left &middot; `
+    +`<em>${Math.round(mleft/60)}h</em> to watch`;
+  document.getElementById("daily").innerHTML=mleft
+    ? `<em>${fmt(mleft/Math.max(1,d))}</em> a day from here &middot; ${(mleft/60/Math.max(1,d/7)).toFixed(1)}h a week`
+    : "Nothing left to watch.";
+  const hb=document.getElementById("weekonly");
+  if(hb)hb.textContent=weekOnly?"Show all weeks":`Week ${curWeek()} only`;
+  const ub=document.getElementById("undo");
+  if(ub)ub.disabled=!hist.length;
+  const sb=document.getElementById("sortby");
+  if(sb)sb.textContent=byDate?"Sort: schedule":"Sort: release order";
+}
+
+const LS=(()=>{try{localStorage.setItem("__t","1");localStorage.removeItem("__t");return true;}
+  catch(e){return false;}})();
+function payload(){return JSON.stringify({v:2,done:[...done],skip:[...skip],day:DAY});}
+async function save(){
+  const p=payload();
+  if(LS){try{localStorage.setItem(KEY,p);return;}catch(e){}}
+  try{await window.storage.set(KEY,p);}catch(e){}
+}
+async function load(){
+  let raw=null;
+  if(LS){try{raw=localStorage.getItem(KEY);}catch(e){}}
+  if(!raw){try{const r=await window.storage.get(KEY);if(r&&r.value)raw=r.value;}catch(e){}}
+  if(!raw)return;
+  try{const o=JSON.parse(raw);
+    if(Array.isArray(o)){done=new Set(o);return;}
+    done=new Set(o.done||[]); skip=new Set(o.skip||[]);
+    if(Array.isArray(o.day)&&o.day.length===DATA.length){
+      DAY=o.day; DATA.forEach((d,i)=>{d[5]=Math.min(14,Math.floor(DAY[i]/7)+1);});
+    }
+  }catch(e){}
+}
+const AB="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+function encode(){
+  let n=0; while(n<DATA.length&&done.has(DATA[n][0]))n++;
+  const ex=[]; for(let i=n;i<DATA.length;i++) if(done.has(DATA[i][0])) ex.push(i+1);
+  const sk=[]; DATA.forEach((d,i)=>{if(skip.has(d[0]))sk.push(i+1);});
+  const rg=[]; let a=0;
+  while(a<sk.length){let b2=a; while(b2+1<sk.length&&sk[b2+1]===sk[b2]+1)b2++;
+    rg.push(a===b2?""+sk[a]:sk[a]+"-"+sk[b2]); a=b2+1;}
+  return n+(ex.length?"+"+ex.join("."):"")+(rg.length?"/"+rg.join("."):"");}
+function decode(c){const out=new Set();c=(c||"").trim();
+  if(/^\d+(\+[\d.]+)?(\/[\d.\-]+)?$/.test(c)){
+    const [main,sks]=c.split("/");
+    skip=new Set();
+    if(sks)sks.split(".").forEach(r=>{const[x,y]=r.split("-").map(Number);
+      for(let i=x;i<=(y||x);i++)if(DATA[i-1])skip.add(DATA[i-1][0]);});
+    const [pre,ex]=main.split("+"); const n=parseInt(pre,10)||0;
+    for(let i=0;i<n&&i<DATA.length;i++)out.add(DATA[i][0]);
+    if(ex)ex.split(".").forEach(x=>{const i=parseInt(x,10)-1;if(DATA[i])out.add(DATA[i][0]);});
+    return out;}
+  for(let i=0;i<c.length;i++){const v=AB.indexOf(c[i]);if(v<0)continue;
+    for(let b=0;b<6;b++){if(v&(1<<b)){const d=DATA[i*6+b];if(d)out.add(d[0]);}}}
+  return out;}
+
+$list.addEventListener("change",e=>{
+  const id=e.target.dataset.id; if(!id)return;
+  snap();
+  e.target.checked?done.add(id):done.delete(id);
+  render();save();
+});
+document.getElementById("hide").addEventListener("click",e=>{
+  hiding=!hiding;
+  e.currentTarget.setAttribute("aria-pressed",hiding);
+  e.currentTarget.textContent=hiding?"Show all":"Hide watched";
+  render();
+});
+$list.addEventListener("click",e=>{
+  const sb=e.target.closest("button.skipbtn");
+  if(sb){e.preventDefault(); snap();
+    if(sb.dataset.skipser){
+      const g=DATA.filter(d=>d[6]===sb.dataset.skipser);
+      const all=g.every(d=>skip.has(d[0]));
+      g.forEach(d=>{all?skip.delete(d[0]):(skip.add(d[0]),done.delete(d[0]));});
+    }else{
+      const id=sb.dataset.skip;
+      skip.has(id)?skip.delete(id):(skip.add(id),done.delete(id));
+    }
+    render();save();return;}
+  const yh=e.target.closest("[data-year]");
+  if(yh){const y=yh.dataset.year; openY.has(y)?openY.delete(y):openY.add(y); render(); return;}
+  const sh=e.target.closest("[data-ser]");
+  if(sh){const v=sh.dataset.ser; openS.has(v)?openS.delete(v):openS.add(v); render(); return;}
+  const b=e.target.closest("button.upto"); if(!b)return;
+  e.preventDefault();
+  snap();
+  const n=+b.dataset.upto;
+  for(let i=0;i<=n;i++)if(!skip.has(DATA[i][0]))done.add(DATA[i][0]);
+  render(); save();
+});
+document.getElementById("sortby").addEventListener("click",e=>{
+  byDate=!byDate; e.currentTarget.setAttribute("aria-pressed",byDate); render();
+});
+document.getElementById("todayonly").addEventListener("click",e=>{
+  todayOnly=!todayOnly; if(todayOnly)weekOnly=false;
+  e.currentTarget.setAttribute("aria-pressed",todayOnly);
+  e.currentTarget.textContent=todayOnly?"Show all days":"Today only";
+  render();
+});
+document.getElementById("weekonly").addEventListener("click",e=>{
+  if(todayOnly){todayOnly=false;document.getElementById("todayonly").textContent="Today only";}
+  weekOnly=!weekOnly;
+  e.currentTarget.setAttribute("aria-pressed",weekOnly);
+  render();
+});
+document.getElementById("docopy").addEventListener("click",async e=>{
+  const f=document.getElementById("code"), b=e.currentTarget;
+  f.select(); f.setSelectionRange(0,99999);
+  let ok=false;
+  try{await navigator.clipboard.writeText(f.value);ok=true;}
+  catch(err){try{ok=document.execCommand("copy");}catch(e2){}}
+  b.textContent=ok?"Copied":"Select & copy";
+  setTimeout(()=>{b.textContent="Copy";},2000);
+});
+document.getElementById("dorest").addEventListener("click",()=>{
+  const f=document.getElementById("rest"), v=f.value;
+  if(!v.trim())return;
+  snap(); done=decode(v); f.value=""; render(); save();
+  const b=document.getElementById("dorest");
+  b.textContent="Restored"; setTimeout(()=>{b.textContent="Restore";},2000);
+});
+let armed=0;
+document.getElementById("reset").addEventListener("click",e=>{
+  const b=e.currentTarget;
+  if(!armed){armed=1;b.textContent="Tap again to clear";b.classList.add("danger");
+    setTimeout(()=>{armed=0;b.textContent="Clear all";b.classList.remove("danger");},3000);return;}
+  armed=0;b.textContent="Clear all";b.classList.remove("danger");
+  snap();done.clear();skip.clear();render();save();
+});
+document.getElementById("undo").addEventListener("click",undo);
+let rarmed=0;
+document.getElementById("replan").addEventListener("click",e=>{
+  const b=e.currentTarget;
+  if(!rarmed){rarmed=1;b.textContent="Tap again to re-plan";b.classList.add("danger");
+    setTimeout(()=>{rarmed=0;b.textContent="Re-plan from today";b.classList.remove("danger");},3000);return;}
+  rarmed=0;b.textContent="Re-plan from today";b.classList.remove("danger");
+  replan();render();
+});
+document.getElementById("search").addEventListener("input",e=>{
+  q=e.target.value.trim().toLowerCase(); render();
+});
+
+(async function(){
+  document.getElementById("of").textContent="of "+DATA.length+" watched";
+  await load();
+  render();
+})();
+
+if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
